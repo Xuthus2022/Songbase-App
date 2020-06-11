@@ -41,7 +41,7 @@ export default App = () => {
           renderItem={({ item: { title } }) => (
             <View>
               <Text 
-              style={[styles.titleText, textOnPress]}
+              style={[styles.titleText, textOnPress, ]}
               onPress={() => setPressed(true)}
           >{title}</Text>
             </View>
@@ -79,8 +79,9 @@ const styles = StyleSheet.create({
   },
   titleText: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: 'left',
     justifyContent: 'center',
-    fontSize: 14,
+    marginLeft: 30,
+    fontSize: 16,
   },
 }); 
