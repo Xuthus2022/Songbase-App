@@ -34,7 +34,7 @@ export default App = () => {
         />
       </View>
       <View>
-      { isLoading ? <ActivityIndicator placeholder="loading data..."/> : (
+      { isLoading ? <ActivityIndicator/> : (
         <FlatList
           data={data.sort((a, b) => a.title.localeCompare(b.title))}
           keyExtractor={(item) =>  item.id.toString() }
