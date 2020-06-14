@@ -41,9 +41,9 @@ export default App = () => {
           renderItem={({ item: { title } }) => (
             <View>
               <Text 
-              style={[styles.titleText, textOnPress, ]}
+              style={[styles.titleText, ...{backgroundColor: {title} % 2 === 0 ? 'white' : '#F2F2F2'}, textOnPress, ]}
               onPress={() => setPressed(true)}
-          >{title}</Text>
+          >{title.slice(0, 100)}</Text>
             </View>
           )}/>
       )}
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'left',
     justifyContent: 'center',
-    marginLeft: 30,
+    marginHorizontal: 30,
     fontSize: 16,
   },
 }); 
