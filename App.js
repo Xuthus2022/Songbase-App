@@ -30,7 +30,7 @@ export default App = () => {
         <Text style={styles.headerText}>Songbase</Text>
         <TextInput
           style={styles.input}
-          placeholder="search...                  "
+          placeholder="search..."
         />
       </View>
       <View>
@@ -41,7 +41,7 @@ export default App = () => {
           renderItem={({ item: { title } }) => (
             <View>
               <Text 
-              style={[styles.titleText, textOnPress, {backgroundColor: title.length % 2 === 0 ? 'white' : '#F2F2F2'}]}
+              style={[styles.titleText, textOnPress, {backgroundColor: title.length % 3 === 0 ? 'white' : '#F2F2F2'}]}
               onPress={() => setPressed(true)}
           >{title.slice(0, 100)}</Text>
             </View>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     width: 130,
     height: 30,
-    textAlign: 'center',
   },
   titleText: {
     flex: 1,
