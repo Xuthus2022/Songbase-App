@@ -6,7 +6,7 @@ export default App = () => {
 
   const [pressed, setPressed] = useState(false)
   const [isLoading, setLoading] = useState(true)
-  const [data, setData] = useState([])
+  const [appData, setAppData] = useState([])
 
   const textOnPress = {
     backgroundColor: pressed ? '#202020' : '#fff',
@@ -18,7 +18,7 @@ export default App = () => {
   useEffect(() => {
     fetch('https://songbase.life/api/v1/app_data?updated_at=0')
       .then((response) => response.json())
-      .then((json) => setData(json.songs))
+      .then((json) => setAppData(json.songs))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false))
   }, []);
@@ -30,20 +30,20 @@ export default App = () => {
         <Text style={styles.headerText}>Songbase</Text>
         <TextInput
           style={styles.input}
-          placeholder="search..."
+          placeholder="search...                  "
         />
       </View>
       <View>
       { isLoading ? <ActivityIndicator/> : (
         <FlatList
-          data={data.sort((a, b) => a.title.localeCompare(b.title)).slice(0, 100)}
+          data={appData.sort((a, b) => a.title.localeCompare(b.title))}
           keyExtractor={(item) =>  item.id.toString() }
           renderItem={({ item: { title } }) => (
             <View>
               <Text 
-              style={[styles.titleText, ...{backgroundColor: {title} % 2 === 0 ? 'white' : '#F2F2F2'}, textOnPress, ]}
+              style={[styles.titleText, textOnPress, {backgroundColor: title.length % 2 === 0 ? 'white' : '#F2F2F2'}]}
               onPress={() => setPressed(true)}
-          >{title}</Text>
+          >{title.slice(0, 100)}</Text>
             </View>
           )}/>
       )}
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     width: 130,
     height: 30,
+    textAlign: 'center',
   },
   titleText: {
     flex: 1,
