@@ -36,14 +36,14 @@ export default App = () => {
       <View>
       { isLoading ? <ActivityIndicator/> : (
         <FlatList
-          data={appData.sort((a, b) => a.title.localeCompare(b.title))}
+          data={appData.sort((a, b) => a.title.localeCompare(b.title)).slice(0, 100)}
           keyExtractor={(item) =>  item.id.toString() }
-          renderItem={({ item: { title } }) => (
+          renderItem={({ item: { title }, index }) => (
             <View>
               <Text 
-              style={[styles.titleText, textOnPress, {backgroundColor: title.length % 3 === 0 ? 'white' : '#F2F2F2'}]}
+              style={[styles.titleText, textOnPress, {backgroundColor: index % 2 === 0 ? 'white' : '#F2F2F2'}]}
               onPress={() => setPressed(true)}
-          >{title.slice(0, 100)}</Text>
+          >{title}</Text>
             </View>
           )}/>
       )}
