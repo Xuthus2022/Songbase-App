@@ -7,8 +7,7 @@ export default App2 = () => {
   const [songsData, setSongs] = useState([])
   const [referencesData, setReferences] = useState([])
   const [booksData, setBooks] = useState([])
-  
-  const [search, setSearch] = useState('') 
+  const [searchData, setSearch] = useState('') 
 
   // Variables that have true and false values
   const [titlePressed, setPressed] = useState(false)
@@ -21,6 +20,7 @@ export default App2 = () => {
     color: titlePressed ? '#fff' : '#000',
   }
 
+  // fetching the Songs and References
   useEffect(() => {
     fetch('https://songbase.life/api/v1/app_data?updated_at=0')
       .then((response) => response.json())
@@ -42,7 +42,7 @@ export default App2 = () => {
 
   function searchIsNumber() {
     const isNumberRegex = new RegExp("^[0-9]+$", "i")
-    return isNumberRegex.test(search)
+    return isNumberRegex.test(searchData)
   };
 
   function getSearchResults() {
@@ -50,7 +50,7 @@ export default App2 = () => {
       str = str.replace(/\_/g, " ")
       return str.normalize("NFD").replace(/(\[.+?\])|[’'",“\-—–!?()\[\]]|[\u0300-\u036f]/g, "")
     } 
-    const strippedSearch = stripString(search)
+    const strippedSearch = stripString(searchData)
     const searchResults = []
     const displayLimit = 100 // react gets laggy rendering 2k songsData, so there's a limit
 
@@ -59,22 +59,15 @@ export default App2 = () => {
       searchResults = songsData.slice(0, displayLimit).map(song => {
         return {
           song: song,
-          tag: ""
         }
       })
     } else if (() => searchIsNumber()) {
-      const search = parseInt(search) 
+      const search = parseInt(searchData) 
       const refs = referencesData.filter(ref => ref.index == search) 
       searchResults = refs.map(ref => {
         const book = booksData.find(book => book.id == ref.book_id) 
         return {
           song: songsData.find(song => song.id == ref.song_id),
-          tag:
-            '<span class="search_tag">' +
-            book.name +
-            ": #" +
-            ref.index +
-            "</span>"
         } 
       }) 
       return searchResults 
@@ -123,24 +116,58 @@ export default App2 = () => {
     return searchResults.slice(0, displayLimit) 
   };
 
+
+  return (
+    //Parent View
+        <View style={styles.container}>
+          <View style={styles.headerInputView}>
+            <Text style={styles.headerText}>Songbase</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="search..."
+              clearButtonMode='always'
+              onChangeText={(val) => setSearch(val)}
+            />
+            <Text>Search: {searchData}</Text>
+          </View>
+        
+          <View>
+          { isLoading ? <ActivityIndicator/> : (
+           <FlatList
+            data={appData.sort((a, b) => a.title.localeCompare(b.title)).slice(0, 100)}
+            keyExtractor={(item) =>  item.id.toString() }
+            renderItem={({ item: { title }, index }) => (
+              <View>
+                <Text 
+                style={[styles.titleText, textOnPress, {backgroundColor: index % 2 === 0 ? 'F2F2F2' : 'white'}]}
+                onPress={() => setPressed(true)}
+            >{title}</Text>
+              </View>
+            )}/>
+          )}
+          </View>
+        </View>
+      ) 
+    };
+    
   function render() {
     getKeysByValue = function(object, value) {
       return Object.keys(object).filter(key => object[key] === value);
     };
 
-    return (
+    /* return (
       <div className="song-index" key="song-index">
         <div className="search-form form" key="search-form">
           <input
             id="index_search"
-            value={search}
+            value={searchData}
             onChange={on}
             name="song[search]"
             className="index_search"
             placeholder="search..."
             key="search-input"
           />
-          {search.length > 0 ? (
+          {searchData.length > 0 ? (
             <div className="btn_clear_search" onClick={this.props.clearSearch}>
               ×
             </div>
@@ -171,4 +198,4 @@ export default App2 = () => {
       </div>
     )
   };
-};
+ */};

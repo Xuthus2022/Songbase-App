@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ActivityIndicator, FlatList, StyleSheet, TextInput } from 'react-native';
+import { Text, View, ActivityIndicator, FlatList, StyleSheet, TextInput, StatusBar, TouchableOpacity,Image } from 'react-native';
 
 
 export default App = () => {
@@ -26,18 +26,30 @@ export default App = () => {
   }, []); 
 
   return (
-//Parent View
     <View style={styles.container}>
-      <View style={styles.headerInputView}>
-        <Text style={styles.headerText}>Songbase</Text>
+      <StatusBar barstyle="Dark-content" />
+      <View>
+        <Text 
+          style={styles.headerText}
+          // onPress to go home
+        >Songbase</Text>
+      </View>
+      <View style={styles.inputView}>
         <TextInput
           style={styles.input}
           placeholder="search..."
           onChangeText={(val) => setSearch(val)}
+          value={search}
         />
-        <Text>Search: {search}</Text>
+        <TouchableOpacity
+          style={styles.closeButtonParent}
+          onPress={() => setSearch('')}>
+          <Image
+            style={styles.closeButton}
+            source={require('./assets/close.png')}
+          />
+        </TouchableOpacity>
       </View>
-    
       <View>
       { isLoading ? <ActivityIndicator/> : (
        <FlatList
@@ -46,9 +58,9 @@ export default App = () => {
         renderItem={({ item: { title }, index }) => (
           <View>
             <Text 
-            style={[styles.titleText, textOnPress, {backgroundColor: index % 2 === 0 ? 'F2F2F2' : 'white'}]}
-            onPress={() => setPressed(true)}
-        >{title}</Text>
+              style={[styles.titleText, textOnPress, {backgroundColor: index % 2 === 0 ? '#F2F2F2' : 'white'}]}
+              onPress={() => setPressed(true)}
+            >{title}</Text>
           </View>
         )}/>
       )}
@@ -57,30 +69,40 @@ export default App = () => {
   ) 
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
   },
-  headerInputView: {
+  headerText: {
     alignItems: 'center',
     padding: 10,
-    marginTop: 25,
-  },
-  headerText: {
+    marginTop: 20,
     color: 'blue',
     fontSize: 40,
-
+  },
+  inputView: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 20,
+    padding: 10,
   },
   input: {
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#777',
-    marginVertical: 20,
     width: 130,
     height: 30,
+  },
+  closeButton: {
+    height: 32,
+    width: 32,
+  },
+  closeButtonParent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 5,
   },
   titleText: {
     flex: 1,
